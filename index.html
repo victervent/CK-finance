@@ -2199,27 +2199,27 @@ updateQuickDebtDisplay();
 let petsInventory = JSON.parse(localStorage.getItem('petsInventory') || '[]');
 let activePets = JSON.parse(localStorage.getItem('activePets') || '[]'); // Max 3
 
-const petTypes = [
-    { name: "Mèo Hoang", emoji: "🐱", income: 1000000, rate: 0.30 },
-    { name: "Chó Nghèo", emoji: "🐶", income: 3000000, rate: 0.20 },
-    { name: "Chuột Hamster", emoji: "🐭", income: 5000000, rate: 0.15 },
-    { name: "Thỏ Con", emoji: "🐰", income: 10000000, rate: 0.10 },  
-    { name: "Cá Con", emoji: "🐟", income: 15000000, rate: 0.08 },  
-    { name: "Cú Mèo", emoji: "🦉", income: 20000000, rate: 0.06 },      
-    { name: "Sư Tử Con", emoji: "🦁", income: 30000000, rate: 0.05 },   
-    { name: "Gấu Trúc", emoji: "🐼", income: 50000000, rate: 0.03 },
-    { name: "Cáo Bạc", emoji: "🦊", income: 80000000, rate: 0.015 },
-    { name: "Kỳ Lân", emoji: "🦄", income: 120000000, rate: 0.08 },
-    { name: "Rồng Con", emoji: "🐲", income: 180000000, rate: 0.01 },
-    { name: "Rồng Vàng", emoji: "🐉", income: 250000000, rate: 0.009 },
-    { name: "Kim Cương Beast", emoji: "💎", income: 350000000, rate: 0.007 },
-    { name: "Lửa miễn phí", emoji: "🔥", income: 500000000, rate: 0.0006 }, // MYTHIC
-    // PET TROLL MỚI THÊM
-    { name: "Người Da Đen", emoji: "👨🏿‍🦲", income: 10000000, rate: 0.012 }, 
-    { name: "Nig Noel", emoji: "🎅🏿", income: 15000000, rate: 0.05 }, 
-    { name: "Thần Tài Đến", emoji: "🧧", income: 88888888, rate: 0.0005}, 
-    
-];
+    const petTypes = [
+        { name: "Mèo Hoang", emoji: "🐱", income: 1000000, rate: 0.30 },
+        { name: "Chó Nghèo", emoji: "🐶", income: 3000000, rate: 0.20 },
+        { name: "Chuột Hamster", emoji: "🐭", income: 5000000, rate: 0.15 },
+        { name: "Thỏ Con", emoji: "🐰", income: 10000000, rate: 0.10 },  
+        { name: "Cá Con", emoji: "🐟", income: 15000000, rate: 0.08 },  
+        { name: "Cú Mèo", emoji: "🦉", income: 20000000, rate: 0.06 },      
+        { name: "Sư Tử Con", emoji: "🦁", income: 30000000, rate: 0.04 },   
+        { name: "Gấu Trúc", emoji: "🐼", income: 50000000, rate: 0.03 },
+        { name: "Cáo Bạc", emoji: "🦊", income: 80000000, rate: 0.02 },
+        { name: "Kỳ Lân", emoji: "🦄", income: 120000000, rate: 0.01 },
+        { name: "Rồng Con", emoji: "🐲", income: 180000000, rate: 0.009 },
+        { name: "Rồng Vàng", emoji: "🐉", income: 250000000, rate: 0.007 },
+        { name: "Kim Cương Beast", emoji: "💎", income: 350000000, rate: 0.005 },
+        { name: "Lửa miễn phí", emoji: "🔥", income: 500000000, rate: 0.0005 }, // MYTHIC
+        // PET TROLL MỚI THÊM
+        { name: "Người Da Đen", emoji: "👨🏿‍🦲", income: 10000000, rate: 0.012 }, 
+        { name: "Nig Noel", emoji: "🎅🏿", income: 150000000, rate: 0.015 }, 
+        { name: "Thần Tài Đến", emoji: "🧧", income: 88888888, rate: 0.0005}, 
+        
+    ];
 
 function openPetShop() {
     renderPetShop();
