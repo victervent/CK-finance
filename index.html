@@ -8,6 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
      <link rel="icon" type="image/x-icon" href="https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/Image%20FP_2024/hinh-anime-2.jpg">
     <style>
+        /* HIỆU ỨNG BLACK EDITION - ĐEN TUYỀN + GLOW TÍM */
+.black-title {
+    color: #000000 !important;
+    background: #000000;
+    padding: 8px 15px;
+    border-radius: 12px;
+    text-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.6), inset 0 0 10px rgba(138, 43, 226, 0.3);
+    border: 2px solid;
+    animation: blackPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes blackPulse {
+    from { 
+        box-shadow: 0 0 20px rgba(138, 43, 226, 0.6), inset 0 0 10px rgba(138, 43, 226, 0.3);
+        border-color: #4B0082;
+    }
+    to { 
+        box-shadow: 0 0 35px rgba(138, 43, 226, 0.9), inset 0 0 15px rgba(138, 43, 226, 0.5);
+        border-color: #BA55D3;
+    }
+}
         :root {
             --bg: #0d1117;
             --card: #161b22;
@@ -34,6 +56,7 @@
             position: relative;
         }
         .reset-btn {
+            z-index:999;
             position: absolute;
             left: 16px;
             top: 50%;
@@ -127,29 +150,399 @@
             .sidebar { max-height: 50vh; }
             .reset-btn { position: static; transform: none; margin: 10px auto; display: block; width: fit-content; }
         }
+/* Thêm vào cuối phần style */
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+#missionBadge { animation: pulse 2s infinite; }
+.mission-item { 
+    background: linear-gradient(135deg, #1a0033, #2d004d); 
+    border: 2px solid #8b00ff40; 
+    border-radius: 12px; 
+    padding: 16px; 
+    margin: 10px 0; 
+    transition: all 0.3s; 
+}
+.mission-item:hover { 
+    border-color: #8b00ff80; 
+    box-shadow: 0 0 20px rgba(139,0,255,0.3); 
+    transform: translateY(-2px); 
+}
+.mission-available { border-color: #00ff9d !important; box-shadow: 0 0 25px rgba(0,255,157,0.4) !important; }
+.mission-completed { 
+    background: linear-gradient(135deg, #006400, #004d00) !important; 
+    border-color: #00ff9d !important; 
+    opacity: 0.7; 
+}
+.mission-btn { 
+    width: 100%; padding: 10px; border: none; border-radius: 8px; 
+    font-weight: bold; cursor: pointer; font-size: 14px; 
+    transition: all 0.3s; margin-top: 8px;
+}
+.mission-btn:disabled { 
+    background: #30363d !important; color: #666 !important; cursor: not-allowed !important; 
+}
+.mission-success { background: #00ff9d; color: black; }
+.mission-fail { background: #ff0066; color: white; }
+/* ================== ACHIEVEMENT SYSTEM ================== */
+.achievement-container {
+    position: fixed;
+    top: 100px;
+    right: -450px;
+    width: 420px;
+    max-width: 90vw;
+    z-index: 10004;
+    transition: right 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.achievement-container.show {
+    right: 20px;
+}
+
+.achievement-header {
+    background: linear-gradient(135deg, #1a0033, #2d004d, #4b0082);
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    border: 3px solid #8b00ff;
+    border-bottom: none;
+    text-align: center;
+    color: #ffd700;
+    font-size: 22px;
+    font-weight: bold;
+    text-shadow: 0 0 15px #ffd700;
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-header::before {
+    content: "🏆";
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    animation: trophyFloat 3s ease-in-out infinite;
+}
+
+@keyframes trophyFloat {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(-50%) translateX(5px); }
+}
+
+.achievement-list {
+    background: #0f0c1a;
+    border: 3px solid #8b00ff;
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.achievement-item {
+    padding: 20px;
+    border-bottom: 1px solid #2a1a4a;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-item:hover {
+    background: rgba(139, 0, 255, 0.1);
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(139, 0, 255, 0.2);
+}
+
+.achievement-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 17px 17px;
+}
+
+.achievement-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-right: 15px;
+    float: left;
+    flex-shrink: 0;
+}
+
+.achievement-bronze .achievement-icon {
+    background: linear-gradient(135deg, #cd7f32, #b8860b);
+    color: white;
+    box-shadow: 0 0 20px rgba(205, 127, 50, 0.5);
+}
+
+.achievement-silver .achievement-icon {
+    background: linear-gradient(135deg, #c0c0c0, #a9a9a9);
+    color: #333;
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
+}
+
+.achievement-gold .achievement-icon {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #b8860b;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+    animation: goldShine 2s ease-in-out infinite alternate;
+}
+
+@keyframes goldShine {
+    from { box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+    to { box-shadow: 0 0 40px rgba(255, 215, 0, 1); }
+}
+
+.achievement-platinum .achievement-icon {
+    background: linear-gradient(135deg, #e5e4e2, #f0f0f0);
+    color: #1a1a1a;
+    box-shadow: 0 0 40px rgba(229, 228, 226, 0.8);
+    animation: platinumGlow 3s ease-in-out infinite;
+}
+
+@keyframes platinumGlow {
+    0%, 100% { box-shadow: 0 0 40px rgba(229, 228, 226, 0.8); }
+    50% { box-shadow: 0 0 60px rgba(229, 228, 226, 1); }
+}
+
+.achievement-content {
+    margin-left: 75px;
+    margin-top: 5px;
+}
+
+.achievement-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.achievement-desc {
+    font-size: 13px;
+    color: #c9d1d9;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.achievement-progress {
+    background: #2a1a4a;
+    border-radius: 10px;
+    height: 6px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.achievement-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8b00ff, #ff00ff);
+    border-radius: 10px;
+    transition: width 1s ease;
+    box-shadow: 0 0 10px rgba(139, 0, 255, 0.5);
+}
+
+.achievement-unlocked {
+    background: linear-gradient(135deg, #006400, #00ff9d) !important;
+    color: white !important;
+    animation: achievementUnlock 1s ease-out;
+}
+
+
+@keyframes achievementUnlock {
+    0% { 
+        transform: scale(0.8); 
+        opacity: 0; 
+        box-shadow: 0 0 0 rgba(0, 255, 157, 0);
+    }
+    50% { 
+        transform: scale(1.05); 
+        opacity: 1; 
+        box-shadow: 0 0 30px rgba(0, 255, 157, 0.8);
+    }
+    100% { 
+        transform: scale(1); 
+        opacity: 1; 
+        box-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
+    }
+}
+
+.achievement-notification {
+    position: fixed;
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    z-index: 10005;
+    background: linear-gradient(135deg, #1a0033, #2d004d);
+    border: 3px solid #ffd700;
+    border-radius: 20px;
+    padding: 25px 35px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(255, 215, 0, 0.4);
+    max-width: 500px;
+    animation: achievementPopup 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes achievementPopup {
+    0% { 
+        transform: translateX(-50%) scale(0) rotate(-180deg); 
+        opacity: 0; 
+    }
+    60% { 
+        transform: translateX(-50%) scale(1.1) rotate(10deg); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translateX(-50%) scale(1) rotate(0deg); 
+        opacity: 1; 
+    }
+}
+
+/* Scrollbar đẹp cho achievement */
+.achievement-list::-webkit-scrollbar {
+    width: 8px;
+}
+.achievement-list::-webkit-scrollbar-track {
+    background: #1a0f2e;
+    border-radius: 10px;
+}
+.achievement-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(#8b00ff, #ff00ff);
+    border-radius: 10px;
+}
+.achievement-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(#a855f7, #ff1493);
+}
     </style>
 </head>
 <body>
     <header>
-        VCB REAL TRADER - By motkiki
-        <button class="reset-btn" onclick="resetGame()">RESET GAME</button>
-        <div style="position:absolute; top:12px; right:16px; z-index:999;">
-            
-    <button onclick="openBank()" 
-            style="background:linear-gradient(90deg,#00ff9d,#00cc7a); 
-                   color:black; 
+        MOTKIKI
+        <!-- Thay thế hoàn toàn button reset-btn cũ -->
+
+       <div style="position: absolute; top:12px; right:16px; z-index:999; display:flex; gap:10px; align-items:center;">
+            <!-- Thêm button này vào div header (cùng chỗ với TIẾT KIỆM, CHỢ ĐEN, NHIỆM VỤ) -->
+     
+<button onclick="toggleAchievements()" 
+        style="
+        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffcc00 100%);
+        color: #b8860b; 
+        font-weight: bold; 
+        padding: 12px 24px; 
+        border: none; 
+        border-radius: 16px; 
+        box-shadow: 
+            0 6px 20px rgba(255, 215, 0, 0.4),
+            0 0 0 1px rgba(255, 215, 0, 0.3);
+        cursor: pointer; 
+        font-size: 15px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        min-width: 140px;
+        ">
+    <i class="fas fa-trophy" style="margin-right: 8px;"></i>
+    <span>THÀNH TỰU</span>
+    <span id="achievementCount" style="
+        position: absolute;
+        top: -8px; right: -8px;
+        background: #ff0066; color: white;
+        border-radius: 50%; width: 24px; height: 24px;
+        font-size: 12px; font-weight: bold;
+        display: none; align-items: center; justify-content: center;
+        box-shadow: 0 0 10px #ff0066;
+        animation: achievementPulse 2s infinite;
+    "></span>
+</button>
+   <button onclick="openBank()" 
+        style="
+        position: relative;
+        background: linear-gradient(135deg, #00ff9d 0%, #00cc7a 50%, #00b360 100%);
+        color: black; 
+        font-weight: bold; 
+        padding: 12px 24px; 
+        border: none; 
+        border-radius: 16px; 
+        box-shadow: 
+            0 6px 20px rgba(0, 255, 157, 0.4),
+            0 0 0 1px rgba(0, 255, 157, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        cursor: pointer; 
+        font-size: 15px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        min-width: 120px;
+        ">
+    <i class="fas fa-piggy-bank" style="margin-right: 8px; color: #006600;"></i>
+    <span>TIẾT KIỆM</span>
+    <div style="
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s;
+        ">
+    </div>
+    <!-- Nút CHỢ ĐEN (đã có) -->
+    <button onclick="openBlackMarket()" 
+            style="background:linear-gradient(90deg,#ff0066,#ff00ff); 
+                   color:white; padding:10px 20px; border:none; border-radius:12px;
+                   box-shadow:0 0 25px #ff00ff88; cursor:pointer; font-weight:bold;
+                   transition:all 0.3s;">
+        <i class="fas fa-dice-six"></i> CHỢ ĐEN
+    </button>
+ 
+ <button onclick="openMissions()" 
+            style="background:linear-gradient(90deg,#8b00ff,#4b0082); 
+                   color:white; 
                    font-weight:bold; 
                    padding:10px 20px; 
                    border:none; 
                    border-radius:12px; 
-                   box-shadow:0 0 20px #00ff9d88, 0 4px 15px rgba(0,0,0,0.4);
+                   box-shadow:0 0 25px #8b00ff88, 0 4px 15px rgba(0,0,0,0.4);
                    cursor:pointer; 
                    font-size:15px;
-                   transition:all 0.3s;">
-        TIẾT KIỆM
+                   transition:all 0.3s;
+                   position:relative;">
+        <i class="fas fa-tasks"></i> NHIỆM VỤ
+        <span id="missionBadge" style="position:absolute;top:-5px;right:-5px;background:#ff0066;color:white;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:bold;display:none;">!</span>
     </button>
+    
+   
 </div>
+<button class="reset-btn" onclick="resetGame()">
+    <div class="reset-btn-content">
+        <i class="fas fa-redo-alt" style="margin-right: 8px;"></i>
+        <span>RESET GAME</span>
+    </div>
+    <div class="reset-btn-glow"></div>
+    <div class="reset-btn-shine"></div>
+    <div class="reset-btn-particles"></div>
+</button>
     </header>
+   
+    <!-- MODAL NHỢM VỤ -->
+<div id="missionModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:420px; max-width:95%; background:#0f0c1a; border:4px solid #8b00ff; border-radius:20px; padding:25px; z-index:10003; box-shadow:0 0 60px #8b00ff99;">
+    <div style="text-align:center; color:#8b00ff; font-size:24px; font-weight:bold; margin-bottom:20px; text-shadow:0 0 15px #8b00ff;">
+        <i class="fas fa-tasks"></i> NHIỆM VỤ RỬA NGHI NGỜ
+    </div>
+    <div style="color:#ffd700; text-align:center; font-size:16px; margin-bottom:25px; line-height:1.5; background:#1a2332; padding:15px; border-radius:12px; border-left:4px solid #8b00ff;">
+        Hoàn thành nhiệm vụ để <span style="color:#00ff9d;font-weight:bold;">GIẢM NGHI NGỜ PHÁP LÝ</span><br>
+        <small style="color:#c9d1d9;">⚠️ Nhiệm vụ chỉ xuất hiện khi nghi ngờ > 20%</small>
+    </div>
+
+    <div id="missionList" style="max-height:350px; overflow-y:auto; margin-bottom:20px;">
+        <!-- Nhiệm vụ sẽ được tạo động bởi JS -->
+    </div>
+
+    <div style="text-align:center;">
+        <button onclick="closeMissions()" 
+                style="width:100%; padding:14px; background:#30363d; color:white; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer;">
+            <i class="fas fa-times"></i> ĐÓNG
+        </button>
+    </div>
+</div>
     <!-- POPUP TIẾT KIỆM -->
 <div id="bankModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:340px; max-width:90%; background:#0d1117; border:3px solid #00ff9d; border-radius:20px; padding:22px; z-index:10000; box-shadow:0 0 40px #00ff9d99;">
     <div style="text-align:center; color:#00ff9d; font-size:19px; font-weight:bold; margin-bottom:15px; text-shadow:0 0 10px #00ff9d;">
@@ -194,24 +587,28 @@
                 <button class="btn-all" onclick="buyAll()">MUA HẾT TIỀN</button>
                 <button class="btn-all" onclick="sellAll()">BÁN HẾT CỔ</button>
                 
-            </div>
-
+            </div>  
+<button onclick="openQuickLoan()" style="background:linear-gradient(90deg,#ff00ff,#8b00ff); color:white; font-weight:bold; padding:10px 20px; border:none; border-radius:12px; box-shadow:0 0 25px #ff00ff88; cursor:pointer; font-size:15px; position:relative;">
+    <i class="fas fa-clock"></i> VAY NHANH 60s
+    <span id="quickDebtBadge" style="position:absolute;top:-5px;right:-5px;background:#ff0066;color:white;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:bold;display:none;align-items:center;justify-content:center;">!</span>
+</button>
+<button onclick="openPetShop()" 
+        style="background:linear-gradient(135deg,#ff00ff,#8b00ff); color:white; font-weight:bold; padding:10px 20px; border:none; border-radius:12px; box-shadow:0 0 25px #ff00ff88; cursor:pointer; font-size:15px; position:relative; min-width:140px;">
+    <i class="fas fa-store" style="margin-right:8px;"></i> SHOP PET
+    <span id="petBadge" style="position:absolute;top:-5px;right:-5px;background:#00ff9d;color:black;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:bold;display:none;justify-content:center;align-items:center;">!</span>
+</button>
             <div class="manip-section">
                 <div class="manip-title">THAO TÚNG THỊ TRƯỜNG (80% THÀNH CÔNG)</div>
                 <div class="manip-grid">
-                    <button class="btn-manip" data-cost="45tr" onclick="playerManip(0)">Tin đồn VCB chia cổ tức 35%</button>
-                    <button class="btn-manip" data-cost="50tr" onclick="playerManip(1)">Chủ tịch VCB bị bắt khẩn cấp!</button>
-                    <button class="btn-manip" data-cost="120tr" onclick="playerManip(2)">Phanh phui rửa tiền 100.000 tỷ</button>
-                    <button class="btn-manip" data-cost="160tr" onclick="playerManip(3)">Nhà nước bơm 200.000 tỷ vào VCB!</button>
-                    <button class="btn-manip" data-cost="240tr" onclick="playerManip(4)">VCB trúng siêu dự án 500.000 tỷ</button>
-                    <button class="btn-manip" data-cost="380tr" onclick="playerManip(5)">VCB lên sàn NYSE – FOMO toàn cầu</button>
-                    <button class="btn-manip" data-cost="580tr" onclick="playerManip(6)">VCB lãi kỷ lục 1 triệu tỷ!</button>
-                    <button class="btn-manip" data-cost="40tr" onclick="playerManip(7)">Tỷ phú âm thầm gom 15% cổ phần</button>
-                    <button class="btn-manip" data-cost="90tr" onclick="playerManip(8)">Quỹ ngoại xả 30% cổ phần VCB</button>
-                    <button class="btn-manip" data-cost="65tr" onclick="playerManip(9)">Hacker tấn công hệ thống VCB</button>
-                    <button class="btn-manip" data-cost="110tr" onclick="playerManip(10)">VCB bị kiểm toán đột xuất</button>
-                    <button class="btn-manip" data-cost="220tr" onclick="playerManip(11)">VCB được chọn làm ngân hàng quốc gia</button>
-                    <button class="btn-manip" data-cost="140tr" onclick="playerManip(12)">Cổ đông lớn bán tháo trong đêm</button>
+                    <button class="btn-manip" data-cost="100tr" onclick="playerManip(0)">Tung tin đồn VCB chia cổ tức đặc biệt ↑</button>
+<button class="btn-manip" data-cost="110tr" onclick="playerManip(1)">Phát hiện VCB có khoản vay xấu ↓</button>
+<button class="btn-manip" data-cost="180tr" onclick="playerManip(2)">Tỷ phú ẩn danh gom ngầm 15% cổ phần↑</button>
+<button class="btn-manip" data-cost="250tr" onclick="playerManip(3)">Chủ tịch VCB bị mời lên làm việc ↓</button>
+<button class="btn-manip" data-cost="350tr" onclick="playerManip(4)">Nhà nước bơm tiền cấp cứu VCB ↑</button>
+<button class="btn-manip" data-cost="420tr" onclick="playerManip(5)">Cổ đông lớn xả 25% cổ phần trong đêm ↓</button>
+<button class="btn-manip" data-cost="480tr" onclick="playerManip(6)">VCB trúng siêu dự án  ↑</button>
+<button class="btn-manip" data-cost="600tr" onclick="playerManip(7)">VCB được chọn làm ngân hàng quốc gia ↑</button>
+<button class="btn-manip" data-cost="780tr" onclick="playerManip(8)">VCB bị Moody’s hạ tín nhiệm  ↓</button>
                    
                 </div>
             </div>
@@ -221,17 +618,133 @@
             </div>
         </div>
     </div>
+<!-- ACHIEVEMENT PANEL -->
+<div id="achievementContainer" class="achievement-container">
+    <div class="achievement-header">
+        🏆 DANH SÁCH THÀNH TỰU CỦA BẠN
+        <div style="position: absolute; top: 15px; right: 20px; font-size: 14px; color: #c9d1d9;">
+            <span id="totalUnlocked"></span>
+        </div>
+    </div>
+    <div id="achievementList" class="achievement-list">
+        <!-- Achievements sẽ được tạo động bởi JavaScript -->
+    </div>
+</div>
 
+<!-- Overlay cho achievement -->
+<div id="achievementOverlay" onclick="toggleAchievements()" 
+     style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10003;"></div>
+<!-- ================== CHỢ ĐEN BÍ ẨN (Mới) ================== -->
+<div id="blackMarketModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:390px; max-width:94%; background:#0f0c1a; border:4px solid #ff00ff; border-radius:20px; padding:24px; z-index:10001; box-shadow:0 0 50px #ff00ff99;">
+    <div style="text-align:center; color:#ff00ff; font-size:22px; font-weight:bold; margin-bottom:18px; text-shadow:0 0 15px #ff00ff;">
+        <i class="fas fa-dice"></i> CHỢ ĐEN - QUAY THƯỞNG VCB <i class="fas fa-dice"></i>
+    </div>
+    <div style="color:#ff3366; text-align:center; font-size:15px; margin-bottom:20px; line-height:1.4;">
+        Chọn 1 trong 4 vali bí mật<br>
+        <span style="color:#ffd700;">Không biết giá – chỉ biết số cổ!</span><br>
+        <span id="blackMarketCooldown" style="color:#00ff9d; font-weight:bold;">Sẵn sàng</span>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <button class="mystery-btn" data-shares="100">
+            <div style="font-size:24px; font-weight:bold; color:#ffd700;">?</div>
+            <div style="font-size:16px; margin-top:8px;">100 VCB</div>
+        </button>
+        <button class="mystery-btn" data-shares="150">
+            <div style="font-size:24px; font-weight:bold; color:#ff00ff;">?</div>
+            <div style="font-size:16px; margin-top:8px;">150 VCB</div>
+        </button>
+        <button class="mystery-btn" data-shares="200">
+            <div style="font-size:24px; font-weight:bold; color:#ff9500;">?</div>
+            <div style="font-size:16px; margin-top:8px;">200 VCB</div>
+        </button>
+        <button class="mystery-btn" data-shares="250">
+            <div style="font-size:24px; font-weight:bold; color:#ff0066;">?</div>
+            <div style="font-size:16px; margin-top:8px;">250 VCB</div>
+        </button>
+    </div>
+
+    <button onclick="closeBlackMarket()" style="margin-top:22px; width:100%; padding:14px; background:#30363d; color:white; border:none; border-radius:12px; font-weight:bold;">
+        THOÁT CHỢ ĐEN
+    </button>
+</div>
+
+
+
+</div>
+</div>
+
+<!-- MODAL VAY NHANH 60 GIÂY - PHIÊN BẢN HOÀN CHỈNH -->
+<div id="quickLoanModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:420px; max-width:95%; background:#0f0c1a; border:4px solid #ff00ff; border-radius:20px; padding:25px; z-index:10003; box-shadow:0 0 60px #ff00ff99;">
+    <div style="text-align:center; color:#ff00ff; font-size:24px; font-weight:bold; margin-bottom:20px; text-shadow:0 0 15px #ff00ff;">
+        <i class="fas fa-clock"></i> VAY NHANH 60 GIÂY
+    </div>
+    <div style="color:#ffd700; text-align:center; font-size:16px; margin-bottom:20px; background:#1a2332; padding:15px; border-radius:12px;">
+        Vay ngay - Trả trong 60 giây → sạch nợ!<br>
+        <b style="color:#00ff9d;"> Trả sớm → phí 30% x số tiền được vay</b><br>
+        <b style="color:#ff0066;">Trả muộn → phí 40% x số tiền được vay + risk +60%</b>
+    </div>
+
+    <div style="background:#1a2332; padding:15px; border-radius:12px; margin-bottom:15px; color:#c9d1d9;">
+        <div>Vốn khả dụng: <b style="color:#00ff9d;" id="quickCapital">0 triệu</b></div>
+        <div>Hạn mức vay: <b style="color:#ffd700;" id="quickMaxLoan">0 triệu</b></div>
+        <div>Nợ hiện tại: <b style="color:#ff0066;" id="quickCurrentDebt">0 triệu</b></div>
+        <div id="quickTimer" style="color:#ff9500; font-weight:bold; margin-top:10px; display:none;">
+            ⏰ Còn: <span id="quickCountdown">60</span>s để trả sớm
+        </div>
+    </div>
+
+    <input type="number" id="quickLoanAmount" placeholder="Nhập số triệu muốn vay" style="width:100%; padding:12px; background:#161b22; border:2px solid #30363d; color:white; border-radius:12px; text-align:center; margin-bottom:15px; font-size:16px;">
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <button onclick="takeQuickLoan()" style="background:#ff00ff; color:white; padding:14px; border:none; border-radius:12px; font-weight:bold; font-size:16px;">VAY NGAY</button>
+        <button onclick="closeQuickLoan()" style="background:#30363d; color:white; padding:14px; border:none; border-radius:12px; font-weight:bold; font-size:16px;">HỦY</button>
+    </div>
+
+    <button id="repayBtn" onclick="repayQuickLoan()" style="display:none; width:100%; margin-top:15px; padding:12px; background:#00ff9d; color:black; border:none; border-radius:12px; font-weight:bold; font-size:16px;">
+        TRẢ NỢ NGAY
+    </button>
+</div>
+
+
+<!-- MODAL SHOP PET - GACHA + INVENTORY + MAX 3 ACTIVE -->
+<div id="petShopModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:450px; max-width:95%; background:#0f0c1a; border:4px solid #ff00ff; border-radius:20px; padding:25px; z-index:10005; box-shadow:0 0 60px #ff00ff99; overflow-y:auto; max-height:90vh;">
+    <div style="text-align:center; color:#ff00ff; font-size:24px; font-weight:bold; margin-bottom:20px;">
+        <i class="fas fa-store"></i> SHOP PET 
+    </div>
+    <div style="color:#ffd700; text-align:center; font-size:16px; margin-bottom:20px; background:#1a2332; padding:15px; border-radius:12px;">
+        Quay trứng 500 triệu → random pet!<br>
+        <b> Mang tối đa 3 pet active (16 pet) </b>
+    </div>
+
+    <div style="text-align:center; margin-bottom:20px;">
+        <button onclick="buyPetEgg()" style="padding:16px 40px; background:linear-gradient(135deg,#ffd700,#ff9500); color:black; border:none; border-radius:12px; font-weight:bold; font-size:18px; cursor:pointer; box-shadow:0 0 30px #ffd70088;">
+            🥚 QUAY TRỨNG PET (500 TRIỆU)
+        </button>
+    </div>
+
+    <div style="background:#1a2332; padding:15px; border-radius:12px;">
+        <strong>ACTIVE PETS (tối đa 3 - đang cho tiền):</strong>
+        <div id="activePets" style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px;"></div>
+        <strong style="display:block; margin-top:20px;">TỦ ĐỒ (click pet để mang/bỏ):</strong>
+        <div id="petInventoryList" style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px;"></div>
+    </div>
+
+    <button onclick="closePetShop()" style="width:100%; margin-top:20px; padding:12px; background:#30363d; color:white; border:none; border-radius:12px; font-weight:bold;">
+        ĐÓNG SHOP
+    </button>
+</div>
 <script>
     // ================== BIẾN TOÀN CỤC ==================
     let price = 90000, lastPrice = price;
-    let shares = 0, capital = 60000000, totalStart = capital;
+    let shares = 0, capital = 50000000, totalStart = capital;
     let legalRisk = 0, ongoingEffect = 0, effectEndTime = 0;
     let currentVolumeBoost = 0;
     let currentTitleIndex = -1;
     let lastNaturalEventTime = 0;
     let lastLuckyTime = Date.now();
-    let lastBadEventTime = Date.now();          
+    let lastBadEventTime = Date.now();        
+    const gameStartTime = Date.now();  
     let pendingNaturalEvent = null;
 
     let prices = [], volumes = [], ema20 = [], chart;
@@ -245,17 +758,21 @@
     // ================== DỮ LIỆU ==================
     const badEvents = [
         { text: "Nhà nước đánh thuế đột xuất cổ phiếu → Nộp ngay 8 triệu", cash: 8000000, risk: 20 },
-        { text: "Hacker rút trộm tiền trong ví → Mất 15 triệu", cash: 15000000, risk: 12 },
-        { text: "Công an mời lên uống nước → Nộp phạt 10 triệu", cash: 10000000, risk: 18 },
-        { text: "Thuế truy thu lợi nhuận → Trừ ngay 30 triệu", cash: 30000000, risk: 15 },
+        { text: "Hacker rút trộm tiền trong ví → Mất 15 triệu", cash: 15000000, risk: 15 },
+        { text: "Công an mời lên uống nước → Nộp phạt 10 triệu", cash: 10000000, risk: 19 },
+        { text: "Thuế truy thu lợi nhuận → Trừ ngay 30 triệu", cash: 30000000, risk: 25 },
         { text: "Nhóm Telegram bị sờ gáy → Mất 200 cổ tạm giữ", shares: 200, risk: 20 },
         { text: "Bạn bị lộ danh tính → Phải bán tháo gấp, mất 100 cổ", shares: 100, risk: 25 },
-        { text: "Ngân hàng khóa tài khoản tạm thời → Rút phạt 12 triệu", cash: 12000000, risk: 10 },
-        { text: "Tin đồn tiêu cực trên VnExpress → Mất 250 cổ do hoảng loạn", shares: 250, risk: 22 },
+        { text: "Ngân hàng khóa tài khoản tạm thời → Rút phạt 19 triệu", cash: 19000000, risk: 10 },
+        { text: "Bạn gái cũ đòi quà -> Trừ 20 triệu ", cash: 20000000, risk: 18 },
+
+        { text: "Tin đồn tiêu cực trên VnExpress → Mất 300 cổ do hoảng loạn", shares: 300, risk: 22 },
         { text: "Chuyển khoản nhầm cho công an → Mất 20 triệu", cash: 20000000, risk: 30 },
         { text: "Bị bạn thân lừa đảo → Mất 180 cổ VCB", shares: 180, risk: 28 },
-         { text: "Bị nghi ngờ là người da đen ",  risk: 50 }
+         { text: "Bị nghi ngờ là người da đen ",  risk: 30 }
     ];
+
+
 
     function triggerBadEvent() {
         const now = Date.now();
@@ -296,73 +813,94 @@
         }, 30000); // đúng 30 giây sau cảnh báo
     }
     const naturalEvents = [
-        { text: "Lãi suất tăng 1%", change: -0.08 },
-        { text: "Ngân hàng Nhà nước bơm tiền", change: 0.06 },
+        { text: "Lãi suất tăng 1%", change: -0.10 },
+        { text: "Ngân hàng Nhà nước bơm tiền", change: 0.11 },
         { text: "Đại gia NMN mua nhiều cổ phiếu", change: 0.12 },
-        { text: "Khối ngoại mua ròng mạnh", change: 0.06 },
-        { text: "VCB được nâng hạng tín nhiệm", change: 0.06 },
-        { text: "Tin đồn kiểm toán đặc biệt", change: -0.07 },
-        { text: "Chủ tịch VCB phát biểu tích cực", change: 0.05 },
+        { text: "Khối ngoại mua ròng mạnh", change: 0.13 },
+        { text: "VCB được nâng hạng tín nhiệm", change: 0.07 },
+        { text: "Tin đồn kiểm toán đặc biệt", change: -0.13 },
+        { text: "Chủ tịch VCB phát biểu tích cực", change: 0.08 },
         { text: "VCB trúng thầu lớn", change: 0.09 },
-        { text: "Lạm phát tăng cao", change: -0.04 },
+        { text: "Lạm phát tăng cao", change: -0.08},
         { text: "Chứng khoán toàn cầu đỏ lửa", change: -0.09 },
-        { text: "VCB phát hành thêm cổ phiếu", change: -0.03 },
-        { text: "Cổ đông lớn thoái vốn", change: -0.02 },
+        { text: "VCB phát hành thêm cổ phiếu", change: -0.08},
+        { text: "Cổ đông lớn thoái vốn", change: -0.14 },
         { text: "FOMO cực mạnh trên các nhóm", change: 0.06 },
-        { text: "Margin call lan rộng", change: -0.05 }
+        { text: "Margin call lan rộng", change: -0.09},
+        { text: "Kono Dio Da", change: -0.06},
+        { text: "Lão đại Bùi Nguyên vào sàn", change: 0.07},
     ];
 
-    const playerEvents = [
-        {text: 'Tin đồn VCB chia cổ tức 35%', change: 0.12, cost: 45000000, risk: 20},
-        {text: 'Chủ tịch VCB bị bắt khẩn cấp!', change: -0.14, cost: 50000000, risk: 18},
-        {text: 'Phanh phui rửa tiền 100.000 tỷ!', change: -0.18, cost: 120000000, risk: 30},
-        {text: 'Nhà nước bơm 200.000 tỷ vào VCB!', change: 0.19, cost: 160000000, risk: 24},
-        {text: 'VCB trúng siêu dự án 500.000 tỷ', change: 0.24, cost: 240000000, risk: 28},
-        {text: 'VCB lên sàn NYSE – FOMO toàn cầu', change: 0.30, cost: 380000000, risk: 38},
-        {text: 'VCB lãi kỷ lục 1 triệu tỷ!', change: 0.40, cost: 580000000, risk: 50},
-        {text: 'Tỷ phú gom ngầm 15% cổ phần', change: 0.19, cost: 40000000, risk: 12},
-        {text: 'Quỹ ngoại xả 30% cổ phần', change: -0.16, cost: 90000000, risk: 20},
-        {text: 'Hacker tấn công hệ thống VCB', change: -0.15, cost: 65000000, risk: 18},
-        {text: 'VCB bị kiểm toán đột xuất', change: -0.21, cost: 110000000, risk: 25},
-        {text: 'VCB được chọn làm ngân hàng quốc gia', change: 0.22, cost: 220000000, risk: 26},
-        {text: 'Cổ đông lớn bán tháo trong đêm', change: -0.23, cost: 140000000, risk: 28},
-   
+
+ const playerEvents = [
+    { text: 'Tung tin đồn VCB chia cổ tức đặc biệt 35% Up',        change: 0.16, cost: 100000000, risk: 40 },
+    { text: 'Phát hiện VCB có khoản vay xấu 80.000 tỷ Down',         change: -0.17, cost: 110000000, risk: 43 },
+
+    { text: 'Tỷ phú ẩn danh gom ngầm 15% cổ phần VCB Up',          change: 0.21, cost: 180000000, risk: 38 },
+    { text: 'Chủ tịch VCB bị mời lên làm việc 24h Down',             change: -0.22, cost: 250000000, risk: 39 },
+
+    { text: 'Nhà nước bơm khẩn cấp 400.000 tỷ cứu VCB Up',         change: 0.38, cost: 350000000, risk: 45 },
+    { text: 'Cổ đông lớn xả 25% cổ phần trong đêm Down',             change: -0.36, cost: 420000000, risk: 46 },
+    { text: 'VCB trúng siêu dự án đường sắt cao tốc 1 triệu tỷ Up',change: 0.42, cost: 480000000, risk: 47 },
+
+    { text: 'VCB được chọn làm ngân hàng quốc gia duy nhất Up',    change: 0.46, cost: 600000000, risk: 50 },
+    { text: 'VCB bị Moody’s hạ tín nhiệm xuống rác + rút tiền ồ ạt Down', change: -0.48, cost: 780000000, risk: 50 },
     
-    ];
+];
+const titles = [
+        // 🖤 CẤP BLACK EDITION - MÀU ĐEN TUYỀN (NGẦU + BÍ ẨN)
+    { min: 10000000000000,      title: "🖤 GOD NIGGA",        color: "#000000", glow: "#4B0082" },
+    { min: 5000000000000,      title: "🌑 DARK INVESTOR",         color: "#000000", glow: "#6A0DAD" },
+    { min: 2000000000000,      title: "🔮 MYSTIC NIGGA",          color: "#000000", glow: "#8A2BE2" },
+    { min: 1500000000000,      title: "♠️ BLACK ACE",             color: "#000000", glow: "#9932CC" },
+    { min: 1200000000000,             title: "🌚 NIGGEST",         color: "#000000", glow: "#BA55D3" },
+    // 🏆 CẤP THẦN (Màu Cyan & Blue)
+    { min: 1000000000000, title: "👑 GOD TRADER",          color: "#00FFFF" },  // Cyan
+    { min: 800000000000,  title: "🌌 NOVA TRADER",         color: "#00D4FF" },  // Light Cyan
+    { min: 500000000000,  title: "⚡ SUPER TRADER",        color: "#0099FF" },  // Sky Blue
+    { min: 400000000000,  title: "💎 DIAMOND TRADER",      color: "#0066FF" },  // Deep Blue
 
-    const titles = [
-        { min: 300000000000, title: "NIGGEST", color: "#FFFF00	" },
-         { min: 200000000000, title: "ĐỈNH CAO MUÔN LOÀI", color: "#FF0000" },
-        { min: 100000000000, title: "THẦN TÀI SỐNG", color: "#ff00ff" },
-        { min: 50000000000, title: "ELON MUP", color: "#ffd700" },
-        { min: 20000000000, title: "TỶ PHÚ TOP 1 THẾ GIỚI", color: "#ff00ff" },
-        { min: 10000000000, title: "TỶ PHÚ TOP 10 THẾ GIỚI", color: "#ff9500" },
-        { min: 5000000000, title: "TỶ PHÚ TOP 1 VIỆT NAM", color: "#ffd700" },
-        { min: 3000000000, title: "TỶ PHÚ VIỆT NAM", color: "#ff00ff" },
-        { min: 1000000000, title: "TỶ PHÚ MỚI NỔI", color: "#ff9500" },
-        { min: 500000000, title: "CÁ MẬP", color: "#00ff9d" },
-        { min: 300000000, title: "ĐẠI GIA SIÊU CẤP", color: "#58a6ff" },
-        { min: 200000000, title: "ĐẠI GIA", color: "#8b00ff" },
-        { min: 100000000, title: "TƯ DUY TUYỂN THỦ", color: "#39ff14" },
-        { min: 80000000, title: "NHÀ ĐẦU TƯ", color: "#c9d1d9" }
-    ];
+    // 🥇 CẤP HOÀNG GIA (Màu Vàng & Cam)
+    { min: 300000000000,  title: "👑 VUA NHẬP LỆNH",        color: "#FFD700" },  // Gold
+    { min: 250000000000,  title: "🧠 TƯ DUY VÀNG",          color: "#FFA500" },  // Orange
+    { min: 200000000000,  title: "🏛️ HOÀNG ĐẾ CHỨNG KHOÁN", color: "#FF4500" },  // Red Orange
 
-    const luckyEvents = [
-        { text: "Nhà nước hỗ trợ dân 5 triệu", cash: 5000000 },
-        { text: "Tài xỉu + 36 triệu", cash: 36000000 },
-        { text: "2 ngón + 18 triệu", cash: 18000000 },
-        { text: "Chuyển nhầm tiền +17 triệu", cash: 17000000 },
-        { text: "Bố mẹ cho thêm tiền +15 triệu", cash: 15000000 },
-        { text: "Trúng thưởng chương trình +12 triệu", cash: 12000000 },
-        { text: "Hoàn thuế thu nhập +10 triệu", cash: 10000000 },
-        { text: "Trúng vé số giải phụ +20 triệu", cash: 20000000 },
-        { text: "Chủ tịch VCB tặng +100 cổ", shares: 100 },
-        { text: "Cổ đông lớn chuyển nhầm +150 cổ", shares: 150 },
-        { text: "Trúng giải đặc biệt 10 triệu 80 cổ", cash: 10000000, shares: 80 },
-        { text: "Tỷ phú ẩn danh hỗ trợ +15 triệu + 50 cổ!", cash: 15000000, shares: 50 },
-        { text: "Đêm qua em đẹp lắm", cash: 10000000, shares: 100 },
-        { text: "VCB chia tách 2:1 – Cổ nhân đôi!", shares: "double" },
-    ];
+    // 💰 CẤP TỶ PHÚ (Màu Tím & Hồng)
+    { min: 100000000000,  title: "🦅 THẦN TÀI SỐNG",        color: "#FF00FF" },  // Magenta
+    { min: 50000000000,   title: "🚀 ELON MUSK",           color: "#DA70D6" },  // Orchid
+    { min: 20000000000,   title: "🌍 TỶ PHÚ TOP 1 TG",     color: "#9370DB" },  // Medium Purple
+    { min: 10000000000,   title: "🥇 TỶ PHÚ TOP 10 TG",    color: "#8A2BE2" },  // Blue Violet
+    { min: 5000000000,    title: "🇻🇳 TỶ PHÚ TOP 1 VN",    color: "#9400D3" },  // Dark Violet
+
+    // 💎 CẤP ĐẠI GIA (Màu Xanh Lá & Hồng)
+    { min: 3000000000,    title: "💰 TỶ PHÚ VIỆT NAM",     color: "#00FF7F" },  // Spring Green
+    { min: 1000000000,    title: "⭐ TỶ PHÚ MỚI NỔI",      color: "#FF69B4" },  // Hot Pink
+    { min: 500000000,     title: "🐟 CÁ MẬP",              color: "#32CD32" },  // Lime Green
+    { min: 300000000,     title: "💎 ĐẠI GIA SIÊU CẤP",    color: "#FF1493" },  // Deep Pink
+
+    // 🏅 CẤP TRUNG (Màu Xanh & Xám)
+    { min: 200000000,     title: "🏛️ ĐẠI GIA",             color: "#1E90FF" },  // Dodger Blue
+    { min: 100000000,     title: "⚔️ TƯ DUY TUYỂN THỦ",   color: "#00CED1" },  // Dark Turquoise
+    { min: 80000000,      title: "📈 NHÀ ĐẦU TƯ",          color: "#4682B4" },  // Steel Blue
+    { min: 50000000,      title: "🎓 MA MỚI",              color: "#708090" },  // Slate Gray
+];
+   const luckyEvents = [
+    { text: "Nhà nước hỗ trợ mỗi hộ khó khăn +10 triệu", cash: 10000000 },
+    { text: "Tài xỉu gỡ lại được +20 triệu", cash: 20000000 },
+    { text: "2 ngón trúng nhẹ +18 triệu", cash: 18000000 },
+    { text: "Chuyển khoản nhầm +15 triệu", cash: 15000000 },
+    { text: "Bố mẹ cho thêm tiền cà phê +12 triệu", cash: 12000000 },
+    { text: "Trúng thưởng chương trình TV +10 triệu", cash: 10000000 },
+    { text: "Hoàn thuế thu nhập cá nhân +9 triệu", cash: 9000000 },
+    { text: "Trúng vé số giải phụ +25 triệu", cash: 25000000 },
+    { text: "Chủ tịch VCB tặng riêng +90 cổ", shares: 90 },
+    { text: "Cổ đông lớn chuyển nhầm +110 cổ", shares: 110 },
+    { text: "Trúng giải khuyến khích: 8 triệu + 60 cổ", cash: 8000000, shares: 60 },
+    { text: "Tỷ phú ẩn danh hỗ trợ +10 triệu + 70 cổ", cash: 10000000, shares: 70 },
+    { text: "Đêm qua em đẹp lắm… tặng +100 cổ", shares: 100 },
+     { text: "Ân huệ người da trắng", shares: 50, cash:13000000 },
+    
+];
 
     // ================== DỮ LIỆU LỊCH SỬ + EMA ==================
     let temp = 90000;
@@ -451,62 +989,106 @@
         ema20.push(Math.round(volumes.at(-1)*k + last*(1-k)));
     }
 
-    // ================== MUA BÁN ==================
-    const buy = () => {
-        const q = +document.getElementById('qty').value || 0;
-        if(q < 1) return alert('Nhập số lượng!');
-        const cost = price * q * 1.0015;
-        if(cost > capital) return alert('Hết tiền!');
-        capital -= cost; shares += q; currentVolumeBoost += q*1000;
-        addLog(`MUA ${q.toLocaleString()} cổ @ ${price.toLocaleString()}₫`);
-        impactFromTrade(q, true); updateStats();
-    };
+    // ================== MUA BÁN SIÊU KHỦNG – MUA CÀNG NHIỀU GIÁ CÀNG BƠM ==================
+const buy = () => {
+    const q = +document.getElementById('qty').value || 0;
+    if (q < 1) return alert('Nhập số lượng cổ phiếu!');
+    const cost = price * q * 1.0015;
+    if (cost > capital) return alert('Hết tiền rồi đại gia ơi!');
 
-    const sell = () => {
-        const q = +document.getElementById('qty').value || 0;
-        if(q > shares || q < 1) return alert('Không đủ cổ!');
-        capital += price * q * 0.9985; shares -= q; currentVolumeBoost += q*1000;
-        const reduce = Math.floor(q/10);
-        if(reduce > 0){
-            legalRisk = Math.max(0, legalRisk - reduce);
-            addLog(`BÁN ${q.toLocaleString()} cổ @ ${price.toLocaleString()}₫ → Giảm ${reduce}% nghi ngờ`);
-        } else addLog(`BÁN ${q.toLocaleString()} cổ @ ${price.toLocaleString()}₫`);
-        impactFromTrade(q, false); 
-        updateLegalBar(); // cập nhật ngay khi bán giảm
-        updateStats();
-    };
+    capital -= cost;
+    shares += q;
 
-    const buyAll = () => { const q = Math.floor(capital/(price*1.0015)); if(q<1) return alert('Hết tiền!'); document.getElementById('qty').value=q; buy(); };
-    const sellAll = () => { if(shares<1) return alert('Không có gì bán!'); document.getElementById('qty').value=shares; sell(); };
+    // === HIỆU ỨNG GIÁ KHI MUA (CÀNG MUA NHIỀU CÀNG BƠM MẠNH)) ===
+    let pump = 0;
+    let msg = "";
+    if (q >= 100000) { pump = 0.38; msg = "WHALE ĐANG GOM HÀNG KHỦNG!!! VCB SẮP LÊN MÂY!" }
+    else if (q >= 50000) { pump = 0.28; msg = "CÁ MẬP VÀO CUỘC! FOMO ĐIÊN LOẠN!" }
+    else if (q >= 30000) { pump = 0.22; msg = "ĐẠI GIA GOM MẠNH → VCB BƠM MÁU!" }
+    else if (q >= 20000) { pump = 0.18; msg = "TAY TO VÀO LỆNH → GIÁ TĂNG TỐC!" }
+    else if (q >= 10000) { pump = 0.14; msg = "CÁ MẬP GOM 10K+ → GIÁ BẬT TĂNG!" }
+    else if (q >= 5000)  { pump = 0.10; msg = "TAY TO MUA 5K+ → ÁP LỰC MUA MẠNH!" }
+    else if (q >= 2000)  { pump = 0.07; msg = "MUA 2K+ → GIÁ NHÍCH LÊN!" }
+    else if (q >= 1000)  { pump = 0.05; msg = "MUA 1K+ → GIÁ TĂNG NHẸ!" }
 
-    function impactFromTrade(qty, isBuy){
-        if(isBuy && qty >= 10000){
-            const pump = Math.min(qty/60000,1)*0.10;
-            price *= (1+pump); price = Math.round(price/10)*10;
-            addLog(`<span style="color:#00ff9d;font-weight:bold;">CÁ MẬP GOM MẠNH! FOMO bùng nổ!</span>`);
-        }
-        if(!isBuy){
-            let drop = 0, msg = "";
-            if(qty >= 80000) { drop = 0.35; msg = "CÁ MẬP XẢ HÀNG KHỦNG! VCB lao dốc!"; }
-            else if(qty >= 60000) { drop = 0.25; msg = "Đại gia bán tháo – Hoảng loạn!"; }
-            else if(qty >= 40000) { drop = 0.2; msg = "Đại gia bán tháo – Hoảng loạn!"; }
-            else if(qty >= 25000) { drop = 0.15; msg = "Đại gia bán tháo – Hoảng loạn!"; }
-            else if(qty >= 10000) { drop = 0.09; msg = "Cá mập xả 10k+ cổ – Rung lắc mạnh!"; }
-             else if(qty >= 5000) { drop = 0.07; msg = "Tay to bán 5k+ cổ – Áp lực lớn!"; }
-            else if(qty >= 2000) { drop = 0.05; msg = "Tay to bán 2k+ cổ – Áp lực lớn!"; }
-            else if(qty >= 1000) { drop = 0.03; msg = "Chốt lời xuất hiện"; }
-            if(drop>0){
-                price *= (1-drop); price = Math.max(30000, Math.round(price/10)*10);
-                addLog(`<span style="color:#ff0066;font-weight:bold;">${msg}</span>`);
-            }
-        }
+    if (pump > 0) {
+        price *= (1 + pump + Math.random() * 0.05);
+        price = Math.round(price / 10) * 10;
+        addLog(`<span style="color:#00ff9d; font-weight:bold; font-size:18px;">
+                 ${msg}</span>`);
     }
 
+    // Cập nhật biggest buy cho achievement
+    const curMaxBuy = parseInt(localStorage.getItem('biggestBuy') || 0);
+    if (q > curMaxBuy) localStorage.setItem('biggestBuy', q.toString());
+
+    addLog(`MUA ${q.toLocaleString()} cổ @ ${price.toLocaleString()}₫`);
+    updateStats();
+    pushToChart();
+};
+
+const sell = () => {
+    const q = +document.getElementById('qty').value || 0;
+    if (q > shares || q < 1) return alert('Không đủ cổ để bán!');
+
+    const revenue = price * q * 0.9985;
+    capital += revenue;
+    shares -= q;
+
+    // === HIỆU ỨNG GIÁ KHI BÁN (CÀNG BÁN NHIỀU GIÁ CÀNG ĐỔ) ===
+    let drop = 0;
+    let msg = "";
+    if (q >= 100000) { drop = 0.42; msg = "MEGA WHALE XẢ 100K+ → VCB SẬP MẠNH!" }
+    else if (q >= 50000) { drop = 0.32; msg = "CÁ MẬP XẢ HÀNG → HOẢNG LOẠN!" }
+    else if (q >= 30000) { drop = 0.25; msg = "ĐẠI GIA BÁN THÁO → GIÁ LAO DỐC!" }
+    else if (q >= 20000) { drop = 0.20; msg = "TAY TO XẢ 20K+ → ÁP LỰC BÁN KHỦNG!" }
+    else if (q >= 10000) { drop = 0.16; msg = "CÁ MẬP XẢ 10K+ → GIÁ RUNG LẮC MẠNH!" }
+    else if (q >= 5000)  { drop = 0.12; msg = "BÁN 5K+ → GIÁ GIẢM SÂU!" }
+    else if (q >= 2000)  { drop = 0.09; msg = "BÁN 2K+ → ÁP LỰC BÁN TĂNG!" }
+    else if (q >= 1000)  { drop = 0.06; msg = "BÁN 1K+ → GIÁ NHÍCH XUỐNG!" }
+
+    if (drop > 0) {
+        price *= (1 - drop - Math.random() * 0.04);
+        price = Math.max(30000, Math.round(price / 10) * 10);
+        addLog(`<span style="color:#ff3366; font-weight:bold; font-size:18px;">
+                 ${msg}</span>`);
+    }
+
+    // Cập nhật biggest sell
+    const curMaxSell = parseInt(localStorage.getItem('biggestSell') || 0);
+    if (q > curMaxSell) localStorage.setItem('biggestSell', q.toString());
+
+    // Giảm risk khi bán nhiều
+    const riskReduce = Math.floor(q / 8);
+    if (riskReduce > 0) {
+        legalRisk = Math.max(0, legalRisk - riskReduce);
+        addLog(`BÁN ${q.toLocaleString()} cổ → Giảm ${riskReduce}% nghi ngờ pháp lý`);
+        updateLegalBar();
+    } else {
+        addLog(`BÁN ${q.toLocaleString()} cổ @ ${price.toLocaleString()}₫`);
+    }
+
+    updateStats();
+    pushToChart();
+};
+
+// Giữ nguyên 2 nút all in (nếu có)
+const buyAll = () => { 
+    const q = Math.floor(capital / (price * 1.0015)); 
+    if (q < 1) return alert('Hết tiền!'); 
+    document.getElementById('qty').value = q; 
+    buy(); 
+};
+const sellAll = () => { 
+    if (shares < 1) return alert('Không có cổ để bán!'); 
+    document.getElementById('qty').value = shares; 
+    sell(); 
+};
     
     // ================== SỰ KIỆN TỰ NHIÊN ==================
     function triggerNaturalEvent() {
         const now = Date.now();
-        if (pendingNaturalEvent || now - lastNaturalEventTime < 20000) return;
+        if (pendingNaturalEvent || now - lastNaturalEventTime < 30000) return;
         if (Math.random() > 0.28) return;
 
         const ev = naturalEvents[Math.floor(Math.random() * naturalEvents.length)];
@@ -520,7 +1102,6 @@
             const variance = 0.8 + Math.random() * 0.4;
             const changePercent = ev.change * variance;
             price *= (1 + changePercent);
-            price = Math.max(30000, Math.round(price / 10) * 10);
 
             const sign = changePercent > 0 ? "+" : "";
             const color = changePercent > 0 ? "#00ff9d" : "#ff0066";
@@ -684,13 +1265,18 @@
         }
     }, 10000);
 
-    function checkBusted() {
-        if (legalRisk >= 100) {
-            addLog(`<p class="event-busted">BẠN ĐÃ BỊ CÔNG AN BẮT! GAME OVER!</p>`);
-            setTimeout(() => alert("Bạn đã bị bắt vì thao túng quá đà!"), 500);
-            document.querySelectorAll('button').forEach(b => b.disabled = true);
-        }
+  function checkBusted() {
+    if (legalRisk >= 100) {
+        document.querySelectorAll('button, input').forEach(el => el.disabled = true);
+        addLog(`<p class="event-busted" style="font-size:32px; animation:blink 0.25s infinite; text-align:center;">
+                CÔNG AN ỤP VÀO!<br>BẠN BỊ CÒNG TAY – GAME OVER!</p>`);
+        
+        setTimeout(() => {
+            alert("GAME OVER!\nBạn đã bị công an bắt vì thao túng quá đà!\Game sẽ tự động reset sau 3 giây...");
+            location.reload();
+        }, 1500);
     }
+}
 
     // ================== CẬP NHẬT THỐNG KÊ ==================
     function updateStats(){
@@ -788,6 +1374,9 @@ function withdrawDeposit(index) {
     updateDepositList();
 }
 
+
+
+
 // Tự động cập nhật đồng hồ mỗi 0.5s
 setInterval(() => {
     if (deposits.length > 0) updateDepositList();
@@ -803,6 +1392,993 @@ setInterval(() => {
     setInterval(triggerLuckyEvent, 8000);
     setInterval(triggerBadEvent, 15000);                           // Bad Event mỗi ~5–7 phút + cảnh báo 30s
     setInterval(() => { if (legalRisk > 0) startRiskDecay(); }, 10000); // Giảm risk mượt mỗi 10s
+// ================== CHỢ ĐEN PHIÊN BẢN ĐỘC ÁC (lỗ dễ + risk +30%) ==================
+let blackMarketCooldown = 0;
+
+// Tạo overlay riêng cho kết quả (đã có sẵn trong code trước, không cần thêm lại)
+function showBlackMarketResult(sharesSold, cashReceived, multiplier) {
+    const old = document.getElementById('blackMarketResult');
+    if (old) old.remove();
+
+    const profit = cashReceived - (sharesSold * price);
+    const profitText = profit >= 0 ? `+${(profit/1000000).toFixed(1)}tr` : `${(profit/1000000).toFixed(1)}tr`;
+    const color = multiplier >= 2.0 ? "#ffd700" :
+                  multiplier >= 1.3 ? "#ff00ff" :
+                  multiplier >= 1.0 ? "#00ff9d" :
+                  multiplier >= 0.6 ? "#ff9500" : "#ff0066";
+
+    const status = multiplier >= 2.5 ? "JACKPOT HIẾM!!!" :
+                   multiplier >= 1.8 ? "TRÚNG ĐẬM (HIẾM)" :
+                   multiplier >= 1.3 ? "LÃI NHẸ (MAY MẮN)" :
+                   multiplier >= 1.0 ? "HÒA VỐN (RẤT HIẾM)" :
+                   multiplier >= 0.6 ? "LỖ NHẸ..." : "LỖ NẶNG VL!!!";
+
+    const resultHTML = `
+        <div id="blackMarketResult" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);
+            width:380px;max-width:90%;background:linear-gradient(135deg,#1a0033,#2d004d);
+            border:4px solid #ff0066;border-radius:20px;padding:30px;z-index:10002;
+            box-shadow:0 0 70px #ff006699;text-align:center;color:white;
+            animation:popupIn 0.5s forwards;">
+            <div style="font-size:34px;font-weight:bold;color:${color};text-shadow:0 0 20px ${color};margin-bottom:15px;">
+                ${status}
+            </div>
+            <div style="font-size:20px;margin:15px 0;">BÁN ${sharesSold.toLocaleString()} VCB</div>
+            <div style="font-size:44px;font-weight:bold;color:#ffd700;text-shadow:0 0 20px #ffd700;margin:20px 0;">
+                ${(cashReceived/1000000).toFixed(1)} TRIỆU
+            </div>
+            <div style="font-size:20px;color:${profit>=0?'#00ff9d':'#ff3366'};margin:15px 0;">
+                Lãi/lỗ: <b>${profitText}</b><br>
+                <span style="font-size:16px;color:#c9d1d9;">×${multiplier.toFixed(2)} giá sàn</span>
+            </div>
+            <button onclick="document.getElementById('blackMarketResult').remove();document.getElementById('resultOverlay').style.display='none';"
+                    style="margin-top:25px;padding:14px 40px;background:#ff0066;color:white;border:none;border-radius:12px;font-weight:bold;cursor:pointer;">
+                ĐÓNG
+            </button>
+        </div>
+        <style>@keyframes popupIn{from{transform:translate(-50%,-50%) scale(0);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}</style>
+    `;
+    document.body.insertAdjacentHTML('beforeend', resultHTML);
+    document.getElementById('resultOverlay').style.display = 'block';
+}
+
+// Mở chợ đen
+function openBlackMarket() {
+    if (blackMarketCooldown > Date.now()) {
+        const remain = Math.ceil((blackMarketCooldown - Date.now()) / 1000);
+        alert(`Chợ đen đóng cửa vì công an rình!\nMở lại sau ${remain} giây...`);
+        return;
+    }
+    document.getElementById('blackMarketModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+
+    blackMarketCooldown = Date.now() + 60000;
+    const cd = document.getElementById('blackMarketCooldown');
+    const timer = setInterval(() => {
+        const sec = Math.ceil((blackMarketCooldown - Date.now()) / 1000);
+        cd.textContent = sec > 0 ? `Còn ${sec}s` : 'Sẵn sàng!';
+        cd.style.color = sec > 0 ? '#ff3300' : '#00ff9d';
+        if (sec <= 0) clearInterval(timer);
+    }, 500);
+}
+
+function closeBlackMarket() {
+    document.getElementById('blackMarketModal').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+// Xử lý chọn vali – PHIÊN BẢN SIÊU LỖ + RISK +30%
+document.querySelectorAll('.mystery-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const sharesToSell = parseInt(this.dataset.shares);
+        if (shares < sharesToSell) return alert(`Không đủ cổ! Chỉ có ${shares.toLocaleString()} VCB`);
+
+        // TỈ LỆ MỚI: 80% LỖ – 20% LÃI (cực độc ác)
+        const weights = [
+            // Lỗ nặng (60% tổng)
+            0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60,
+            // Lỗ nhẹ + hòa (20% tổng)
+            0.70, 0.75, 0.80, 0.85, 0.90, 0.95,
+            // Lãi (20% tổng, nhưng lãi đậm rất hiếm)
+             1.30, 1.50, 1.80, 2.20, 2.60, 3.00 ,3.50
+        ];
+        const mult = weights[Math.floor(Math.random() * weights.length)];
+        const cash = Math.floor(sharesToSell * price * mult * 0.995); // phí 0.5%
+
+        // Giao dịch
+        shares -= sharesToSell;
+        capital += cash;
+
+        // TĂNG NGHI NGỜ PHÁP LÝ +30% MỖI LẦN (cực dễ bị bắt)
+        legalRisk = Math.min(100, legalRisk + 30);
+
+        // Log + popup
+        const profit = cash - sharesToSell * price;
+        addLog(`<span style="color:${profit>=0?'#00ff9d':'#ff0066'};font-weight:bold;font-size:17px;">
+                CHỢ ĐEN: BÁN ${sharesToSell} VCB → ${profit>=0?'+' : ''}${(profit/1000000).toFixed(1)}tr 
+                ×${mult.toFixed(2)} ${mult<0.8?'(LỖ NẶNG)':''}
+               </span>`);
+
+        updateStats();
+        updateLegalBar();
+        checkBusted();
+        closeBlackMarket();
+        showBlackMarketResult(sharesToSell, cash, mult);
+    });
+});
+
+// ================== MYSTERY EVENT - LUÔN XẢY RA ĐÚNG PHÚT 10 ==================
+let specialEventTriggered = false;
+let specialPendingEvent = null;
+
+function triggerSpecialTrollEvent() {
+    const elapsedSeconds = Math.floor((Date.now() - gameStartTime) / 1000);
+    
+    // ✅ GỢI Ý TẠI PHÚT 9:30 (570 giây) - CÒN 30 GIÂY
+    if (elapsedSeconds === 570 && !specialPendingEvent && !specialEventTriggered) {
+        const hints = [
+            "⚡ SỰ KIỆN SIÊU LỚN CHỈ CÒN 30 GIÂY!",
+            "🌟 MYSTERY EVENT ĐỈNH CAO SẮP NỔ!",
+            "💥 30 GIÂY NỮA... THỊ TRƯỜNG SẼ CHẤN ĐỘNG!",
+            "⭐ CHUẨN BỊ TINH THẦN - EVENT KHỦNG ĐANG ĐẾN!",
+            "🎲 ĐỊNH MỆNH 10 PHÚT SẮP ĐƯỢC TIẾT LỘ!"
+        ];
+        const randomHint = hints[Math.floor(Math.random() * hints.length)];
+        addLog(`<p class="event-mystery" style="font-size:28px; animation:blink 0.6s infinite;
+                background:linear-gradient(45deg, #1a0033, #4B0082, #8A2BE2);
+                color:#FFD700; text-align:center; border:5px solid #FFD700;
+                box-shadow:0 0 50px #FFD70088; text-shadow:0 0 25px #FFD700; 
+                padding:20px; border-radius:20px; margin:10px 0;">
+                ${randomHint}
+                </p>`);
+    }
+    
+    // ✅ GỢI Ý CUỐI CÙNG TẠI PHÚT 9:55 (595 giây) - CÒN 5 GIÂY
+    if (elapsedSeconds === 595 && !specialPendingEvent && !specialEventTriggered) {
+        addLog(`<p class="event-mystery" style="font-size:32px; animation:blink 0.4s infinite;
+                background:linear-gradient(45deg, #FF0000, #FF4500, #FFD700);
+                color:#000; text-align:center; border:6px solid #FFD700;
+                box-shadow:0 0 60px #FFD700CC; text-shadow:0 0 30px #FFD700; 
+                padding:25px; border-radius:25px; margin:10px 0; font-weight:bold;">
+                🔥🔥🔥 CHỈ CÒN 5 GIÂY! MYSTERY EVENT SẮP NỔ! 🔥🔥🔥
+                </p>`);
+    }
+    
+    // ✅ EVENT CHÍNH XÁC TẠI PHÚT 10:00 (600 giây) - 100% XẢY RA
+    if (elapsedSeconds === 600 && !specialEventTriggered) {
+        specialEventTriggered = true;
+        const ev = getBalancedEvent();
+        specialPendingEvent = null;
+        
+        // Hiệu ứng KHỦNG khi event nổ
+        const eventColors = {
+            positive: '#00FF9D',
+            negative: '#FF0066',
+            neutral: '#FFD700'
+        };
+        const color = eventColors[ev.type];
+        
+        addLog(`<div style="
+                background:linear-gradient(135deg, #000428, #004e92, ${color});
+                border:6px solid ${color}; 
+                border-radius:25px; 
+                padding:30px;
+                margin:20px 0; 
+                text-align:center; 
+                box-shadow:0 0 80px ${color}CC;
+                animation: mysteryExplosion 2s ease-out;
+                ">
+            <div style="font-size:48px; font-weight:bold; color:${color}; margin-bottom:20px; 
+                        text-shadow:0 0 40px ${color}; animation: bounce 1s infinite;">
+                🌟 MYSTERY EVENT ĐÃ NỔ! 🌟
+            </div>
+            <div style="font-size:32px; color:#FFFFFF; margin:20px 0; font-weight:bold;">
+                ${ev.name}
+            </div>
+            <div style="font-size:22px; color:#FFD700; font-style:italic; margin-bottom:20px;">
+                ${ev.text}
+            </div>
+            <div style="font-size:28px; color:${color}; font-weight:bold; 
+                        text-shadow:0 0 20px ${color}; padding:15px; 
+                        background:rgba(255,255,255,0.1); border-radius:15px;">
+                ⏰ XẢY RA ĐÚNG PHÚT 10:00
+            </div>
+        </div>`);
+        
+        // Chạy effect
+        setTimeout(() => {
+            ev.effect();
+            updateStats();
+            pushToChart();
+        }, 2000);
+    }
+}
+
+// Thêm CSS animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes mysteryExplosion {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+    }
+`;
+document.head.appendChild(style);
+
+// Cập nhật mỗi giây để đảm bảo chính xác
+setInterval(triggerSpecialTrollEvent, 1000);
+// ================== HỆ THỐNG NHỢM VỤ ==================
+// ================== HỆ THỐNG NHIỆM VỤ (ĐÃ SỬA HOÀN CHỈNH - RESET SAU 5 PHÚT) ==================
+let missions = [];
+
+const missionTemplates = [
+    {
+        id: 1,
+        name: "🛫 QUYÊN GÓP CHO BÙI NGUYÊN",
+        desc: "Góp 300 triệu cho em BÙI",
+        type: "money",
+        cost: 300000000,
+        
+        riskReduction: 15,
+        cooldown: 300000, // 5 phút
+        icon: "fa-hand-holding-heart"
+    },
+    {
+        id: 2,
+        name: "🏦 ĐẦU TƯ XÃ HỘI",
+        desc: "Đầu tư 500 triệu vào dự án cộng đồng",
+        type: "money",
+        cost: 500000000,
+        riskReduction: 18,
+        cooldown: 300000,
+        icon: "fa-building"
+    },
+    {
+        id: 3,
+        name: "📚 TRƯỜNG HỌC MỚI",
+        desc: "Xây 1 phòng học cho trường nghèo",
+        type: "money",
+        cost: 800000000,
+        riskReduction: 20,
+        cooldown: 300000,
+        icon: "fa-graduation-cap"
+    },
+    {
+        id: 4,
+        name: "🏥 BỆNH VIỆN MIỄN PHÍ",
+        desc: "Tài trợ 60 triệu khám bệnh miễn phí",
+        type: "money",
+        cost: 600000000,
+        riskReduction: 22,
+        cooldown: 300000,
+        icon: "fa-hospital"
+    },
+    {
+        id: 5,
+        name: "🌾 HỖ TRỢ NÔNG DÂN",
+        desc: "Cho nông dân vay 40 triệu không lãi",
+        type: "money",
+        cost: 400000000,
+        riskReduction: 12,
+        cooldown: 300000,
+        icon: "fa-tractor"
+    },
+    {
+        id: 6,
+        name: "💼 QUYÊN GÓP CỔ PHIẾU",
+        desc: "Tặng 1000 cổ VCB cho quỹ phúc lợi",
+        type: "shares",
+        cost: 1000,
+        riskReduction: 25,
+        cooldown: 300000,
+        icon: "fa-gift"
+    },
+    {
+        id: 7,
+        name: "👨‍👩‍👧‍👦 GIÚP ĐỢ TRẺ MỒ CÔI",
+        desc: "Nhường 2000 cổ VCB cho trẻ mồ côi",
+        type: "shares",
+        cost: 2000,
+        riskReduction: 28,
+        cooldown: 300000,
+        icon: "fa-child"
+    },
+    {
+        id: 8,
+        name: "🏘️ XÂY NHÀ TÌNH THƯƠNG",
+        desc: "Tặng 5000 cổ VCB xây nhà tình thương",
+        type: "shares",
+        cost: 5000,
+        riskReduction: 30,
+        cooldown: 300000,
+        icon: "fa-home"
+    },
+    {
+        id: 9,
+        name: "💰 GÓP ĐÔI TÀI SẢN",
+        desc: "Góp 250tr tiền + 1000 cổ VCB",
+        type: "both",
+        moneyCost: 250000000,
+        sharesCost: 1000,
+        riskReduction: 28,
+        cooldown: 300000,
+        icon: "fa-handshake"
+    },
+    {
+        id: 10,
+        name: "🌟 SIÊU TỪ THIỆN",
+        desc: "Góp 550tr tiền + 2000 cổ VCB",
+        type: "both",
+        moneyCost: 5500000000,
+        sharesCost: 2000,
+        riskReduction: 60,
+        cooldown: 300000,
+        icon: "fa-star"
+    }
+];
+
+function generateMissions() {
+    missions = [];
+    
+    missionTemplates.forEach(template => {
+        const lastCompleted = parseInt(localStorage.getItem(`mission_${template.id}_completed`) || 0);
+        const canReset = Date.now() - lastCompleted >= 300000; // đúng 5 phút
+        
+        if ((canReset || !lastCompleted) && legalRisk > 20) {
+            missions.push({ 
+                ...template, 
+                available: true,
+                completedAt: null 
+            });
+        }
+    });
+    
+    // Ngẫu nhiên chỉ hiển thị 3-5 nhiệm vụ mỗi lần mở
+    missions = missions.sort(() => Math.random() - 0.5).slice(0, Math.floor(Math.random() * 3) + 3);
+}
+
+function updateMissionList() {
+    const list = document.getElementById('missionList');
+    
+    if(missions.length === 0 || legalRisk <= 20) {
+        list.innerHTML = `
+            <div style="text-align:center; padding:50px; color:#666; line-height:1.8;">
+                <i class="fas fa-heart-broken" style="font-size:60px; margin-bottom:20px; opacity:0.4;"></i>
+                <div style="font-size:19px; color:#ff9500;">KHÔNG CÓ NHIỆM VỤ NÀO</div>
+                <div style="font-size:15px; margin-top:10px;">
+                    Nghi ngờ pháp lý phải > 20% để mở nhiệm vụ rửa nghi ngờ
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    list.innerHTML = missions.map(mission => {
+        let isAffordable = false;
+        let costDisplay = '';
+        
+        if(mission.type === 'money') {
+            isAffordable = capital >= mission.cost;
+            costDisplay = `${(mission.cost/1000000).toFixed(0)} triệu`;
+        } else if(mission.type === 'shares') {
+            isAffordable = shares >= mission.cost;
+            costDisplay = `${mission.cost.toLocaleString()} VCB`;
+        } else if(mission.type === 'both') {
+            isAffordable = capital >= mission.moneyCost && shares >= mission.sharesCost;
+            costDisplay = `${(mission.moneyCost/1000000).toFixed(0)}tr + ${mission.sharesCost.toLocaleString()} VCB`;
+        }
+
+        const lastCompleted = parseInt(localStorage.getItem(`mission_${mission.id}_completed`) || 0);
+        const timeLeft = 300000 - (Date.now() - lastCompleted);
+        const showTimer = lastCompleted > 0 && timeLeft > 0;
+        const minutes = Math.floor(timeLeft / 60000);
+        const seconds = Math.floor((timeLeft % 60000) / 1000);
+
+        const canComplete = mission.available && isAffordable && !showTimer;
+
+        return `
+            <div class="mission-item ${canComplete ? 'mission-available' : (showTimer ? 'mission-completed' : '')}">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <div style="font-size:18px; font-weight:bold; color:#8b00ff;">
+                        <i class="fas ${mission.icon}" style="margin-right:8px; color:#ffd700;"></i>
+                        ${mission.name}
+                    </div>
+                    <div style="font-size:15px; color:#00ff9d; font-weight:bold;">
+                        -${mission.riskReduction}%
+                    </div>
+                </div>
+                <div style="color:#c9d1d9; font-size:14px; margin-bottom:12px;">
+                    ${mission.desc}
+                </div>
+                <div style="background:#1a2332; padding:10px; border-radius:8px; font-size:13px; color:#8b949e; margin-bottom:12px;">
+                    💰 Chi phí: <span style="color:#ffd700; font-weight:bold;">${costDisplay}</span>
+                </div>
+                
+                ${showTimer ? `
+                <div style="text-align:center; color:#ff9500; font-weight:bold; font-size:14px; margin:10px 0;">
+                    ⏳ Reset sau: ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s
+                </div>` : ''}
+
+                <button class="mission-btn ${canComplete ? 'mission-success' : ''}" 
+                        ${canComplete ? `onclick="completeMission(${mission.id})"` : 'disabled'}
+                        style="background: ${canComplete ? '#00ff9d' : '#30363d'}; color: ${canComplete ? 'black' : '#888'};">
+                    ${canComplete ? 'HOÀN THÀNH NGAY' : (showTimer ? 'ĐÃ HOÀN THÀNH' : 'KHÔNG ĐỦ')}
+                </button>
+            </div>
+        `;
+    }).join('');
+}
+
+function completeMission(missionId) {
+    const mission = missions.find(m => m.id === missionId);
+    if(!mission) return;
+
+    let success = false;
+
+    if(mission.type === 'money' && capital >= mission.cost) {
+        capital -= mission.cost;
+        success = true;
+    } else if(mission.type === 'shares' && shares >= mission.cost) {
+        shares -= mission.cost;
+        success = true;
+    } else if(mission.type === 'both' && capital >= mission.moneyCost && shares >= mission.sharesCost) {
+        capital -= mission.moneyCost;
+        shares -= mission.sharesCost;
+        success = true;
+    }
+
+    if(success) {
+        legalRisk = Math.max(0, legalRisk - mission.riskReduction);
+        
+        // Lưu thời gian hoàn thành để reset sau 5 phút
+        localStorage.setItem(`mission_${missionId}_completed`, Date.now());
+        
+        addLog(`<span style="color:#8b00ff; font-weight:bold; font-size:18px;">
+                NHIỆM VỤ HOÀN THÀNH!<br>
+                ${mission.name} → Giảm ${mission.riskReduction}% nghi ngờ pháp lý
+                </span>`);
+
+        setTimeout(() => {
+            addLog(`<span style="color:#00ff9d; font-size:16px;">
+                    Dân chúng tung hô bạn! Uy tín xã hội +999
+                    </span>`);
+        }, 2000);
+
+        updateLegalBar();
+        updateStats();
+        updateMissionList();
+        checkMissionBadge();
+    }
+}
+
+function openMissions() {
+    generateMissions();
+    updateMissionList();
+    document.getElementById('missionModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function closeMissions() {
+    document.getElementById('missionModal').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+function checkMissionBadge() {
+    const hasMission = missionTemplates.some(template => {
+        const last = parseInt(localStorage.getItem(`mission_${template.id}_completed`) || 0);
+        return (Date.now() - last >= 300000 || !last) && legalRisk > 20;
+    });
+    
+    document.getElementById('missionBadge').style.display = hasMission ? 'block' : 'none';
+}
+
+// Tự động cập nhật timer + reset mission mỗi 5 giây
+setInterval(() => {
+    if (document.getElementById('missionModal').style.display === 'block') {
+        updateMissionList();
+    }
+    checkMissionBadge();
+}, 5000);
+
+// Khi load game
+checkMissionBadge();
+// ================== HỆ THỐNG ACHIEVEMENT (ĐÃ FIX 100% - ĐẠT LÀ MỞ NGAY) ==================
+let completedMissions = new Set(); // QUAN TRỌNG: ĐÃ THÊM DÒNG NÀY
+let hasReached100Risk = false;     // Để mở achievement "Risk Controller"
+
+// Theo dõi khi risk chạm 100
+const originalCheckBusted = checkBusted;
+checkBusted = function() {
+    if (legalRisk >= 100) hasReached100Risk = true;
+    originalCheckBusted();
+};
+
+// Khi risk về 0 và từng chạm 100 → mở achievement Risk Controller
+const originalUpdateLegalBar = updateLegalBar;
+updateLegalBar = function() {
+    originalUpdateLegalBar();
+    if (legalRisk <= 0 && hasReached100Risk) {
+        localStorage.setItem('riskRecovery', 'true');
+    }
+};
+
+// Khởi tạo các key localStorage (chỉ chạy 1 lần)
+['manipSuccess','luckyEvents','blackMarketCount','biggestBuy','biggestSell','maxVolume','chartTime','fastTrade','cheapManipSuccess','ultimateManip','riskRecovery'].forEach(key => {
+    if (!localStorage.getItem(key)) localStorage.setItem(key, key.includes('Success')||key.includes('Recovery') ? 'false' : '0');
+});
+
+let achievements = [];
+let unlockedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements') || '[]');
+
+
+const achievementList = [
+    // BRONZE
+    { id: 1, name: "Ma Mới", desc: "Mua 100 cổ VCB đầu tiên", bronze: true, condition: () => shares >= 100 },
+    { id: 2, name: "STONK", desc: "Đạt 80 triệu tài sản", bronze: true, condition: () => (capital + shares * price) >= 80000000 },
+    { id: 4, name: "Người Tiết Kiệm", desc: "Gửi tiết kiệm 10 triệu", bronze: true, condition: () => deposits.some(d => d.amount >= 10000000) },
+    { id: 6, name: "Tay To", desc: "Mua 1000 cổ 1 lần", bronze: true, condition: () => parseInt(localStorage.getItem('biggestBuy') || 0) >= 1000 },
+    { id: 7, name: "Buy high sell low", desc: "Bán 500 cổ 1 lần", bronze: true, condition: () => parseInt(localStorage.getItem('biggestSell') || 0) >= 500 },
+    { id: 8, name: "This is fine", desc: "Nghi ngờ pháp lý > 50%", bronze: true, condition: () => legalRisk >= 50 },
+    { id: 10, name: "Go outside", desc: "Sống sót 10 phút", bronze: true, condition: () => (Date.now() - gameStartTime) >= 600000 }, // ĐÃ SỬA
+    { id: 15, name: "First Profit", desc: "Lãi 10 triệu đầu tiên", bronze: true, condition: () => (capital + shares*price - totalStart) >= 10000000 },
+
+    // SILVER
+    { id: 16, name: "Almost there!", desc: "Đạt 200 triệu tài sản", silver: true, condition: () => (capital + shares * price) >= 200000000 },
+    { id: 20, name: "Whale", desc: "Mua 10k cổ 1 lần", silver: true, condition: () => parseInt(localStorage.getItem('biggestBuy') || 0) >= 10000 }, 
+    { id: 24, name: "1 Hour Survivor", desc: "Chơi 1 giờ liên tục", silver: true, condition: () => (Date.now() - gameStartTime) >= 3600000 }, // ĐÃ SỬA
+    { id: 25, name: "To the Moon", desc: "Lãi 100 triệu", silver: true, condition: () => (capital + shares*price - totalStart) >= 100000000 },
+
+    // GOLD
+    { id: 31, name: "I'm a villain not a monster", desc: "Đạt 1 tỷ tài sản", gold: true, condition: () => (capital + shares * price) >= 1000000000 },
+    { id: 35, name: "Gotta catch them all!", desc: "Mua 100k cổ 1 lần", gold: true, condition: () => parseInt(localStorage.getItem('biggestBuy') || 0) >= 100000 },
+    { id: 39, name: "Mr White", desc: "Lãi 1 tỷ", gold: true, condition: () => (capital + shares*price - totalStart) >= 1000000000 },
+
+    // PLATINUM
+    { id: 41, name: "PLATINUM TRADER", desc: "Đạt 500 tỷ tài sản", platinum: true, condition: () => (capital + shares * price) >= 500000000000 }, 
+    { id: 44, name: "ULTIMATE BILLIONAIRE", desc: "Lãi 100 tỷ", platinum: true, condition: () => (capital + shares*price - totalStart) >= 100000000000 },
+    { id: 45, name: "LEGENDARY TRADER", desc: "Mở khóa tất cả achievement", platinum: true, condition: () => unlockedAchievements.length >= achievementList.length }
+];
+
+function checkAchievements() {
+    let newlyUnlocked = [];
+    achievementList.forEach(ach => {
+        if (ach.condition() && !unlockedAchievements.includes(ach.id)) {
+            unlockedAchievements.push(ach.id);
+            newlyUnlocked.push(ach);
+            localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
+            showAchievementNotification(ach);
+        }
+    });
+    if (newlyUnlocked.length > 0) {
+        updateAchievementUI();
+        updateAchievementCount();
+    }
+}
+
+function showAchievementNotification(achievement) {
+    const notification = document.createElement('div');
+    notification.className = `achievement-notification ${achievement.bronze?'achievement-bronze':achievement.silver?'achievement-silver':achievement.gold?'achievement-gold':'achievement-platinum'}`;
+    const medal = achievement.bronze ? 'BRONZE' : achievement.silver ? 'SILVER' : achievement.gold ? 'GOLD' : 'PLATINUM';
+    notification.innerHTML = `
+        ${medal} THÀNH TỰU MỚI! ${medal}
+        <div style="font-size:18px;margin:10px 0;color:#ffd700;font-weight:bold;">${achievement.name}</div>
+        <div style="font-size:14px;color:#c9d1d9;">${achievement.desc}</div>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 6000);
+}
+
+function updateAchievementUI() {
+    const list = document.getElementById('achievementList');
+    list.innerHTML = achievementList.map(ach => {
+        const unlocked = unlockedAchievements.includes(ach.id);
+        return `
+            <div class="achievement-item ${unlocked?'achievement-unlocked':''} ${ach.bronze?'achievement-bronze':ach.silver?'achievement-silver':ach.gold?'achievement-gold':ach.platinum?'achievement-platinum':''}">
+                <div class="achievement-icon"><i class="fas ${unlocked?'fa-trophy':'fa-lock'}"></i></div>
+                <div class="achievement-content">
+                    <div class="achievement-title">${ach.name}</div>
+                    <div class="achievement-desc">${ach.desc}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function updateAchievementCount() {
+    const count = unlockedAchievements.length;
+    document.getElementById('totalUnlocked').textContent = count + '/' + achievementList.length;
+    const badge = document.getElementById('achievementCount');
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+}
+
+function toggleAchievements() {
+    const container = document.getElementById('achievementContainer');
+    const overlay = document.getElementById('achievementOverlay');
+    if (container.classList.contains('show')) {
+        container.classList.remove('show');
+        overlay.style.display = 'none';
+    } else {
+        container.classList.add('show');
+        overlay.style.display = 'block';
+        updateAchievementUI();
+    }
+}
+
+// Kiểm tra mỗi 2 giây
+setInterval(checkAchievements, 2000);
+
+// Khởi tạo
+updateAchievementUI();
+updateAchievementCount();
+checkAchievements();
+// Theo dõi các sự kiện cần thiết cho achievement
+// Thêm vào các hàm tương ứng:
+
+// ================== VAY NHANH 60 GIÂY - TỰ ĐỘNG PHẠT KHI QUÁ HẠN ==================
+let quickLoanDebt = parseInt(localStorage.getItem('quickLoanDebt') || '0');
+let quickLoanEndTime = parseInt(localStorage.getItem('quickLoanEndTime') || '0');
+let quickLoanTimer = null;
+
+function updateQuickDebtDisplay() {
+    const debtMillion = Math.floor(quickLoanDebt / 1000000);
+    const debtEl = document.getElementById('quickCurrentDebt');
+    if (debtEl) debtEl.textContent = debtMillion.toLocaleString() + ' triệu';
+    const badge = document.getElementById('quickDebtBadge');
+    if (badge) {
+        badge.style.display = quickLoanDebt > 0 ? 'flex' : 'none';
+        badge.textContent = debtMillion > 99 ? '99+' : debtMillion;
+    }
+}
+
+function openQuickLoan() {
+    document.getElementById('quickCapital').textContent = Math.floor(capital / 1000000).toLocaleString() + ' triệu';
+    const maxLoan = Math.floor(capital * 0.3); // 30% vốn khả dụng
+    document.getElementById('quickMaxLoan').textContent = Math.floor(maxLoan / 1000000).toLocaleString() + ' triệu';
+
+    updateQuickDebtDisplay();
+
+    const timerDiv = document.getElementById('quickTimer');
+    const repayBtn = document.getElementById('repayBtn');
+
+    if (quickLoanDebt > 0) {
+        repayBtn.style.display = 'block';
+        repayBtn.textContent = 'TRẢ NỢ SỚM (phí 30%)';
+        if (quickLoanEndTime > Date.now()) {
+            timerDiv.style.display = 'block';
+            startQuickCountdown();
+        } else {
+            timerDiv.style.display = 'none';
+            // Nếu đã quá hạn thì ẩn nút trả nợ (vì đã tự động phạt rồi)
+            repayBtn.style.display = 'none';
+        }
+    } else {
+        timerDiv.style.display = 'none';
+        repayBtn.style.display = 'none';
+    }
+
+    document.getElementById('quickLoanAmount').value = '';
+    document.getElementById('quickLoanModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function closeQuickLoan() {
+    document.getElementById('quickLoanModal').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+function startQuickCountdown() {
+    clearInterval(quickLoanTimer);
+    quickLoanTimer = setInterval(() => {
+        const remain = Math.max(0, Math.ceil((quickLoanEndTime - Date.now()) / 1000));
+        document.getElementById('quickCountdown').textContent = remain;
+
+        if (remain <= 0) {
+            clearInterval(quickLoanTimer);
+            document.getElementById('quickTimer').style.display = 'none';
+            document.getElementById('repayBtn').style.display = 'none';
+
+            // TỰ ĐỘNG PHẠT KHI QUÁ HẠN
+            const fee = Math.floor(quickLoanDebt * 0.50); // Phí 50%
+            const totalPunish = quickLoanDebt + fee;
+
+            if (capital >= totalPunish) {
+                capital -= totalPunish;
+            } else {
+                capital = 1000000; // Còn 1 triệu sống sót
+            }
+
+            legalRisk = Math.min(100, legalRisk + 60); // Risk +60%
+
+            addLog(`<span style="color:#ff0000; font-size:22px; animation:blink 0.3s infinite;">
+                    ⏰ QUÁ HẠN 60s! TỰ ĐỘNG PHẠT: Mất thêm ${(fee/1000000).toFixed(0)} triệu (phí 50%) + risk +60%!
+                   </span>`);
+
+            updateLegalBar();
+            updateStats();
+            updateQuickDebtDisplay();
+            checkBusted();
+
+            // Xóa nợ sau khi phạt
+            quickLoanDebt = 0;
+            quickLoanEndTime = 0;
+            localStorage.removeItem('quickLoanDebt');
+            localStorage.removeItem('quickLoanEndTime');
+        }
+    }, 500);
+}
+
+function takeQuickLoan() {
+    if (quickLoanDebt > 0) return alert('Bạn đang có nợ chưa trả!');
+
+    const input = document.getElementById('quickLoanAmount');
+    let amountMillion = parseFloat(input.value) || 0;
+    let amount = Math.floor(amountMillion * 1000000);
+
+    const maxLoan = Math.floor(capital * 0.3);
+
+    if (amountMillion <= 0) return alert('Nhập số tiền vay!');
+    if (amount > maxLoan) return alert(`Tối đa chỉ vay được ${Math.floor(maxLoan / 1000000).toLocaleString()} triệu!`);
+
+    capital += amount; // TIỀN VAY CỘNG THẲNG VÀO VỐN – VỐN TĂNG THẬT!
+
+    quickLoanDebt = amount;
+    quickLoanEndTime = Date.now() + 60000;
+
+    localStorage.setItem('quickLoanDebt', quickLoanDebt.toString());
+    localStorage.setItem('quickLoanEndTime', quickLoanEndTime.toString());
+
+    addLog(`<span style="color:#ff00ff; font-weight:bold; font-size:18px;">
+            ⚡ VAY NHANH ${amountMillion.toLocaleString()} triệu - Vốn tăng ngay! Có 60s trả sớm!
+           </span>`);
+
+    updateStats();
+    updateQuickDebtDisplay();
+    openQuickLoan();
+}
+
+function repayQuickLoan() {
+    if (quickLoanDebt <= 0) return;
+
+    const fee = Math.floor(quickLoanDebt * 0.30); // Phí trả sớm 30%
+    const totalRepay = quickLoanDebt + fee;
+
+    if (capital < totalRepay) return alert('Không đủ tiền trả nợ + phí!');
+
+    capital -= totalRepay;
+
+    addLog(`<span style="color:#00ff9d; font-weight:bold; font-size:18px;">
+            ✅ TRẢ NỢ SỚM! Mất phí 30% (${(fee/1000000).toFixed(0)} triệu)
+           </span>`);
+
+    quickLoanDebt = 0;
+    quickLoanEndTime = 0;
+    localStorage.removeItem('quickLoanDebt');
+    localStorage.removeItem('quickLoanEndTime');
+
+    clearInterval(quickLoanTimer);
+    updateStats();
+    updateQuickDebtDisplay();
+    closeQuickLoan();
+}
+
+// Load khi reload trang
+if (quickLoanDebt > 0) {
+    quickLoanEndTime = parseInt(localStorage.getItem('quickLoanEndTime') || '0');
+    if (quickLoanEndTime > Date.now()) {
+        startQuickCountdown();
+    } else {
+        // Đã quá hạn từ trước → tự động phạt ngay khi load
+        const fee = Math.floor(quickLoanDebt * 0.50);
+        if (capital >= quickLoanDebt + fee) {
+            capital -= (quickLoanDebt + fee);
+        } else {
+            capital = 1000000;
+        }
+        legalRisk = Math.min(100, legalRisk + 60);
+        addLog(`<span style="color:#ff0000; font-size:18px;">
+                ⏰ NỢ QUÁ HẠN TỪ VÁN TRƯỚC! TỰ ĐỘNG PHẠT phí 50% + risk +60%
+               </span>`);
+        updateLegalBar();
+        updateStats();
+        quickLoanDebt = 0;
+        quickLoanEndTime = 0;
+        localStorage.removeItem('quickLoanDebt');
+        localStorage.removeItem('quickLoanEndTime');
+    }
+}
+
+updateQuickDebtDisplay();
+
+
+// ================== SHOP PET - PHIÊN BẢN HOÀN CHỈNH + MYTHIC + TRÙNG = +1TR ==================
+let petsInventory = JSON.parse(localStorage.getItem('petsInventory') || '[]');
+let activePets = JSON.parse(localStorage.getItem('activePets') || '[]'); // Max 3
+
+const petTypes = [
+    { name: "Mèo Hoang", emoji: "🐱", income: 1000000, rate: 0.30 },
+    { name: "Chó Nghèo", emoji: "🐶", income: 3000000, rate: 0.20 },
+    { name: "Chuột Hamster", emoji: "🐭", income: 5000000, rate: 0.15 },
+    { name: "Thỏ Con", emoji: "🐰", income: 10000000, rate: 0.10 },  
+    { name: "Cá Con", emoji: "🐟", income: 15000000, rate: 0.08 },  
+    { name: "Cú Mèo", emoji: "🦉", income: 20000000, rate: 0.06 },      
+    { name: "Sư Tử Con", emoji: "🦁", income: 30000000, rate: 0.05 },   
+    { name: "Gấu Trúc", emoji: "🐼", income: 50000000, rate: 0.03 },
+    { name: "Cáo Bạc", emoji: "🦊", income: 80000000, rate: 0.015 },
+    { name: "Kỳ Lân", emoji: "🦄", income: 120000000, rate: 0.08 },
+    { name: "Rồng Con", emoji: "🐲", income: 180000000, rate: 0.01 },
+    { name: "Rồng Vàng", emoji: "🐉", income: 250000000, rate: 0.009 },
+    { name: "Kim Cương Beast", emoji: "💎", income: 350000000, rate: 0.007 },
+    { name: "Lửa miễn phí", emoji: "🔥", income: 500000000, rate: 0.0006 }, // MYTHIC
+    // PET TROLL MỚI THÊM
+    { name: "Người Da Đen", emoji: "👨🏿‍🦲", income: 10000000, rate: 0.012 }, 
+    { name: "Nig Noel", emoji: "🎅🏿", income: 15000000, rate: 0.05 }, 
+    { name: "Thần Tài Đến", emoji: "🧧", income: 88888888, rate: 0.0005}, 
+    
+];
+
+function openPetShop() {
+    renderPetShop();
+    document.getElementById('petShopModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function closePetShop() {
+    document.getElementById('petShopModal').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+function renderPetShop() {
+    // Active pets (max 3)
+    const activeDiv = document.getElementById('activePets');
+    activeDiv.innerHTML = activePets.length > 0 ? activePets.map((pet, i) => `
+        <div style="background:#006400;padding:12px;border-radius:12px;text-align:center;color:white;">
+            ${pet.emoji} ${pet.name}<br><b>+${(pet.income/1000000)}tr/phút</b>
+            <button onclick="deactivatePet(${i})" style="margin-top:8px;background:#ff0066;color:white;border:none;padding:6px;border-radius:8px;font-size:12px;">Bỏ mang</button>
+        </div>
+    `).join('') : '<div style="grid-column:1/4;color:#888;">Chưa mang pet nào (max 3)</div>';
+
+    // Inventory (tủ đồ)
+    const invDiv = document.getElementById('petInventoryList');
+    invDiv.innerHTML = petsInventory.length > 0 ? petsInventory.map((pet, i) => {
+        const isActive = activePets.some(p => p.name === pet.name && p.emoji === pet.emoji);
+        return `
+            <div style="background:${isActive?'#00ff9d':'#1a2332'};padding:12px;border-radius:12px;text-align:center;color:${isActive?'black':'white'};">
+                ${pet.emoji} ${pet.name}<br><b>+${(pet.income/1000000)}tr/phút</b>
+                ${activePets.length < 3 && !isActive ? `<button onclick="activatePet(${i})" style="margin-top:8px;background:#00ff9d;color:black;border:none;padding:6px;border-radius:8px;font-size:12px;">Mang</button>` : ''}
+            </div>
+        `;
+    }).join('') : '<div style="grid-column:1/4;color:#888;">Tủ đồ trống - Quay trứng đi!</div>';
+
+    // Badge số pet trong tủ
+    const badge = document.getElementById('petBadge');
+    badge.textContent = petsInventory.length;
+    badge.style.display = petsInventory.length > 0 ? 'flex' : 'none';
+}
+
+function activatePet(index) {
+    if (activePets.length >= 3) return alert('Chỉ mang tối đa 3 pet!');
+    activePets.push(petsInventory[index]);
+    localStorage.setItem('activePets', JSON.stringify(activePets));
+    renderPetShop();
+}
+
+function deactivatePet(index) {
+    activePets.splice(index, 1);
+    localStorage.setItem('activePets', JSON.stringify(activePets));
+    renderPetShop();
+}
+
+function buyPetEgg() {
+    if (capital < 500000000) return alert('Cần 500 triệu để quay trứng!');
+
+    capital -= 500000000;
+
+    // Random pet
+    let rand = Math.random();
+    let selectedPet = petTypes[petTypes.length - 1]; // default mythic
+    for (let p of petTypes) {
+        rand -= p.rate;
+        if (rand <= 0) {
+            selectedPet = p;
+            break;
+        }
+    }
+
+    // Kiểm tra trùng
+    const duplicate = petsInventory.some(p => p.name === selectedPet.name && p.emoji === selectedPet.emoji);
+    if (duplicate) {
+        capital += 1000000; // Trùng → +1 triệu vốn
+        addLog(`<span style="color:#ff9500; font-weight:bold;">
+                🥚 Trùng pet ${selectedPet.emoji} ${selectedPet.name}! Đền bù +1 triệu vốn!
+               </span>`);
+    } else {
+        petsInventory.push({ name: selectedPet.name, emoji: selectedPet.emoji, income: selectedPet.income });
+        localStorage.setItem('petsInventory', JSON.stringify(petsInventory));
+        addLog(`<span style="color:#ff00ff; font-weight:bold; font-size:20px;">
+                🥚 RA PET MỚI: ${selectedPet.emoji} ${selectedPet.name} (+${(selectedPet.income/1000000)}tr/phút)!
+               </span>`);
+    }
+
+    updateStats();
+    renderPetShop();
+}
+
+// Thu nhập từ max 3 active pets mỗi phút
+setInterval(() => {
+    if (activePets.length > 0 && capital > 1000000) {
+        const totalIncome = activePets.reduce((sum, pet) => sum + pet.income, 0);
+        capital += totalIncome;
+        addLog(`<span style="color:#00ff9d; font-weight:bold;">
+                🐾 ${activePets.length} pet active cho +${(totalIncome/1000000).toFixed(1)}tr thu nhập thụ động!
+               </span>`);
+        updateStats();
+    }
+}, 60000);
+
+// Khởi tạo khi load game
+renderPetShop();
+
+function resetGame() {
+    if (confirm('Chơi lại từ đầu? Toàn bộ NỢ + PET sẽ bị xóa sạch, achievement vẫn giữ lại!')) {
+        // Xóa nợ vay nhanh
+        localStorage.removeItem('quickLoanDebt');
+        localStorage.removeItem('quickLoanEndTime');
+
+        // XÓA SẠCH PET (tủ đồ + active pets)
+        localStorage.removeItem('petsInventory');
+        localStorage.removeItem('activePets');
+
+        // (Tùy chọn) Nếu bạn muốn xóa luôn achievement để chơi lại hoàn toàn từ đầu:
+        // localStorage.removeItem('unlockedAchievements');
+        // localStorage.removeItem('biggestBuy');
+        // localStorage.removeItem('biggestSell');
+        // ... các key achievement khác nếu cần
+
+        location.reload();
+    }
+}
+function updateTitle(){
+    const total = capital + shares*price;
+    let newIdx = titles.length-1;
+    for(let i=0;i<titles.length;i++){
+        if(total >= titles[i].min){ newIdx = i; break; }
+    }
+    if(newIdx !== currentTitleIndex){
+        currentTitleIndex = newIdx;
+        const t = titles[newIdx];
+        let el = document.getElementById('playerTitle');
+        if(!el){
+            el = document.createElement('div'); 
+            el.id='playerTitle';
+            document.querySelector('.price-box').after(el);
+        }
+        el.innerHTML = `<i class="fas fa-crown" style="margin-right:8px"></i>${t.title}`;
+
+        // Xóa class cũ
+        el.classList.remove('rainbow-title', 'black-title');
+
+        // Áp dụng hiệu ứng theo loại
+        if(t.color === "rainbow") {
+            el.classList.add('rainbow-title');  
+        } else if(t.color === "#000000") {
+            el.classList.add('black-title');
+            el.style.borderColor = t.glow || "#BA55D3";
+        } else {
+            el.style.color = t.color;
+        }
+
+        if(total >= 100000000){
+            addLog(`<span style="font-size:18px;font-weight:bold;">
+                CHÚC MỪNG! BẠN ĐÃ LÊN HẠNG:<br>→ ${t.title} ←</span>`);
+        }
+    }
+}
+
 </script>
 </body>
 </html>
